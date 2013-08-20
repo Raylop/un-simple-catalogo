@@ -121,6 +121,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'stuff',
     'carritos',
+    'storages',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -169,5 +170,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
 )
 
-
 GRAPPELLI_ADMIN_TITLE = 'Agora Hogar'
+
+if not DEBUG:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    AWS_STORAGE_BUCKET_NAME = agorahogar
+    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+    STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    S3_URL = 'http://%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
+    STATIC_URL = S3_URL
